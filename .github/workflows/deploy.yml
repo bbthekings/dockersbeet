@@ -11,7 +11,14 @@ jobs:
   test:
     # configured under repo/settings/environment=testing
     environment: testing
+    # runs on a github-runner-machine
+    # this machine just hosts the container declared below
     runs-on: ubuntu-latest
+    container: 
+      # image names as per published images on docker hub portal
+      image: node:16
+      # env vars needed by the container image itself
+      # env: 
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
       MONGODB_CLUSTER_ADDRESS: cluster0.b2octig.mongodb.net
