@@ -14,17 +14,31 @@ jobs:
     # runs on a github-runner-machine
     # this machine just hosts the container declared below
     runs-on: ubuntu-latest
+    # job runs now in container
     container: 
       # image names as per published images on docker hub portal
       image: node:16
       # env vars needed by the container image itself
       # env: 
     env:
-      MONGODB_CONNECTION_PROTOCOL: mongodb+srv
-      MONGODB_CLUSTER_ADDRESS: cluster0.b2octig.mongodb.net
-      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      # external mongodb is not needed now
+      #MONGODB_CONNECTION_PROTOCOL: mongodb+srv
+      #MONGODB_CLUSTER_ADDRESS: cluster0.b2octig.mongodb.net
+      #MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+      #MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      # refers to the mongodb-service
+      MONGODB_CONNECTION_PROTOCOL: mongodb
+      MONGODB_CLUSTER_ADDRESS: mongodb-service
+      MONGODB_USERNAME: root
+      MONGODB_PASSWORD: example
       PORT: 8080
+    # deploy a mongodb service into the container
+    services:
+       mongodb-service:
+        image: mongo
+        env: 
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: example
     steps:
       - name: Get Code
         uses: actions/checkout@v3
